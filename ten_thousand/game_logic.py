@@ -2,6 +2,11 @@ class GameLogic:
 
     @staticmethod
     def calculate_score(tup):  # O(n) for time and space
+        """
+        This function takes a tuple of numbers from 1-6 and gives score on them according to the provided rules.
+            :param tup: tuple of numbers
+            :return: number
+        """
         obj = {}  # Base template for the numbers from 1-6
         score = 0
         straight_counter = 0  # counts if the tuple is a straight from 1 to 6
