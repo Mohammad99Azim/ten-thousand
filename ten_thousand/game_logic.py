@@ -1,3 +1,5 @@
+import random
+
 class GameLogic:
 
     @staticmethod
@@ -57,3 +59,21 @@ class GameLogic:
             score = 1500
 
         return score
+
+    @staticmethod
+    def roll_dice(dice):
+        """
+        This method returns a tuple of randomly generated dice set.
+        in this method used random module and use randint function to choose number between 1-6 randomly
+
+        """
+
+        if dice >=1 & dice <=6:
+
+            dice_arr = []
+
+            for i in range(dice):
+                dice_num = random.randint(1, 6)
+                dice_arr.append(dice_num)
+            dice_tuple = tuple(dice_arr)
+            return dice_tuple
