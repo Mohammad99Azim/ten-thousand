@@ -38,7 +38,7 @@ class Game:
                     print('Enter dice to keep, or (q)uit:')
                     user_answer = input('> ')
                     if user_answer == 'q':
-                        print('Thanks for playing. You earned 0 points')
+                        print(f'Thanks for playing. You earned {round_score} points')
 
     @classmethod
     def start_round_and_roll_dice(cls, dice_roll_num, round_number, roller):
