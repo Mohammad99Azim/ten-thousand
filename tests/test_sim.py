@@ -21,3 +21,8 @@ def test_bank_first_for_two_rounds():
     game = Game()
     diffs = diff( game.play, "tests/version_2/bank_first_for_two_rounds.sim.txt"  )
     assert not diffs, diffs
+
+def test_repeat_roller():
+    game= Game()
+    diffs = diff(game.play, "tests/version_2/repeat_roller.sim.txt")
+    assert not diffs, diffs
