@@ -73,16 +73,18 @@ class Game:
                     if user_answer == 'q':
                         print(f'Thanks for playing. You earned {round_score} points')
                     else:
-                        tuple(map(int, user_answer))
+                        shelved_amount = Banker()
+                        round_score += GameLogic.calculate_score(tuple(user_answer))
+                        shelved_amount.shelf(round_score)
                         print(f'You have {round_score} unbanked points and '
                               f'{len(new_roller2) - len(tuple(user_answer))} dice remaining')
                         print('(r)oll again, (b)ank your points or (q)uit:')
                         user_answer = input('> ')
                         if user_answer == 'b':
                             shelved_amount.bank()
-                            print(f'You banked {shelved_amount.balance} points in round {round_counter}')
+                            print(f'You banked {round_score} points in round {round_counter}')
                             round_counter += 1
-                            print(f'Total score is {shelved_amount.balance} points')
+                            print(f'Total score is {round_score} points')
                             Game.start_round_and_roll_dice(6, round_counter, roller)
                             print('Enter dice to keep, or (q)uit:')
                             user_answer = input('> ')
