@@ -1,5 +1,5 @@
 from ten_thousand.game_logic import GameLogic
-from banker import Banker
+from ten_thousand.banker import Banker
 
 
 class Game:
@@ -32,7 +32,7 @@ class Game:
                     print(f'Thanks for playing. You earned {round_score} points')
                 if user_answer == 'b':
                     shelved_amount.bank()
-                    print(f'You banked {shelved_amount.balance} points in round {round_counter}')
+                    print(f'You banked {round_score} points in round {round_counter}')
                     round_counter += 1
                     print(f'Total score is {shelved_amount.balance} points')
                     Game.start_round_and_roll_dice(6, round_counter, roller)
@@ -41,7 +41,6 @@ class Game:
                     if user_answer == 'q':
                         print(f'Thanks for playing. You earned {round_score} points')
                         return
-
 
                     # bank_first_for_two_rounds
                     round_score = GameLogic.calculate_score(tuple(user_answer))
@@ -56,7 +55,7 @@ class Game:
 
                     if user_answer == 'b':
                         shelved_amount.bank()
-                        print(f'You banked {shelved_amount.balance} points in round {round_counter}')
+                        print(f'You banked {round_score} points in round {round_counter}')
                         round_counter += 1
                         print(f'Total score is {shelved_amount.balance} points')
                         Game.start_round_and_roll_dice(6, round_counter, roller)
@@ -89,8 +88,6 @@ class Game:
                             user_answer = input('> ')
                             if user_answer == 'q':
                                 print(f'Thanks for playing. You earned {round_score} points')
-
-
 
     @classmethod
     def start_round_and_roll_dice(cls, dice_roll_num, round_number, roller):
