@@ -25,6 +25,7 @@ class Game:
                 shelved_amount.shelf(round_score)
                 print(f'You have {round_score} unbanked points and '
                       f'{len(new_roller) - len(tuple(user_answer))} dice remaining')
+                dice_remaining = len(new_roller) - len(tuple(user_answer))
                 print('(r)oll again, (b)ank your points or (q)uit:')
                 user_answer = input('> ')
                 if user_answer == 'q':
@@ -40,6 +41,32 @@ class Game:
                     if user_answer == 'q':
                         print(f'Thanks for playing. You earned {round_score} points')
 
+                # repeated_roller
+                if user_answer == 'r':
+                    new_roller2 = Game.repeat_roller(dice_remaining, roller)
+                    print('Enter dice to keep, or (q)uit:')
+                    user_answer = input('> ')
+                    if user_answer == 'q':
+                        print(f'Thanks for playing. You earned {round_score} points')
+                    else:
+                        tuple(map(int, user_answer))
+                        print(f'You have {round_score} unbanked points and '
+                              f'{len(new_roller2) - len(tuple(user_answer))} dice remaining')
+                        print('(r)oll again, (b)ank your points or (q)uit:')
+                        user_answer = input('> ')
+                        if user_answer == 'b':
+                            shelved_amount.bank()
+                            print(f'You banked {shelved_amount.balance} points in round {round_counter}')
+                            round_counter += 1
+                            print(f'Total score is {shelved_amount.balance} points')
+                            Game.start_round_and_roll_dice(6, round_counter, roller)
+                            print('Enter dice to keep, or (q)uit:')
+                            user_answer = input('> ')
+                            if user_answer == 'q':
+                                print(f'Thanks for playing. You earned {round_score} points')
+
+
+
     @classmethod
     def start_round_and_roll_dice(cls, dice_roll_num, round_number, roller):
         print(f'Starting round {round_number}')
@@ -49,6 +76,15 @@ class Game:
         print(f'*** {formatted_roller} ***')
 
         return new_roller
+
+    @classmethod
+    def repeat_roller(cls, dice_roll_num, roller):
+        print(f'Rolling {dice_roll_num} dice...')
+        new_roller2 = roller(dice_roll_num)
+        formatted_roller = ' '.join([str(i) for i in new_roller2])
+        print(f'*** {formatted_roller} ***')
+
+        return new_roller2
 
 
 if __name__ == '__main__':
