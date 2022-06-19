@@ -3,127 +3,72 @@ from ten_thousand.banker import Banker
 
 
 class Game:
-    def __init__(self):
-        self.zilch = None
 
-    @staticmethod
-    def zilch():
-        print("###########################################")
-        print("###        Zilch!! Round over :(        ###")
-        print("##########################################")
+    def __init__(self):
+
 
     def play(self, roller=GameLogic.roll_dice):
-        round_counter = 1
-        print('Welcome to Ten Thousand')
-        print('(y)es to play or (n)o to decline')
-        user_answer = input('> ')
-        if user_answer == 'n':
+
+        print('''Welcome to Ten Thousand
+(y)es to play or (n)o to decline''')
+        start_play = input('> ')
+        if start_play[0] == 'n':
             print('OK. Maybe another time')
+            return
+
+        ###
+
+        self.rolling_dice_text(self.dice_number, roller)
+        self.user_input_handler(roller)
+
+    def rolling_dice_text(self, dice_num, roller, print_start_round=1):
+        if print_start_round == 1:
+            self.round_counter += 1
+            print(f'Starting round {self.round_counter}')
+        random_dices = roller(dice_num)
+        text = "*** "
+        for x in random_dices:
+            text += str(x) + " "
+        text += "***"
+        print(f'''Rolling {dice_num} dice...
+{text}
+Enter dice to keep, or (q)uit:''')
+
+    def user_input_handler(self, roller):
+        user_input_var = input("> ")
+        if user_input_var == 'q':
+            self.user_choose_quit()
+        elif user_input_var == 'b':
+            self.user_input_bank(roller)
+            self.user_input_handler(roller)
+        elif user_input_var == 'r':
+            self.user_input_roll(roller)
+            self.user_input_handler(roller)
         else:
-            new_roller = Game.start_round_and_roll_dice(6, round_counter, roller)
-            print('Enter dice to keep, or (q)uit:')
-            user_answer = input('> ')
-            if user_answer == 'q':
-                print('Thanks for playing. You earned 0 points')
-            else:
-                shelved_amount = Banker()
-                round_score = GameLogic.calculate_score(tuple(user_answer))
-                shelved_amount.shelf(round_score)
-                print(f'You have {round_score} unbanked points and '
-                      f'{len(new_roller) - len(tuple(user_answer))} dice remaining')
-                dice_remaining = len(new_roller) - len(tuple(user_answer))
-                print('(r)oll again, (b)ank your points or (q)uit:')
-                user_answer = input('> ')
-                if user_answer == 'q':
-                    print(f'Thanks for playing. You earned {round_score} points')
-                if user_answer == 'b':
-                    shelved_amount.bank()
-                    print(f'You banked {round_score} points in round {round_counter}')
-                    round_counter += 1
-                    print(f'Total score is {shelved_amount.balance} points')
-                    Game.start_round_and_roll_dice(6, round_counter, roller)
-                    print('Enter dice to keep, or (q)uit:')
-                    user_answer = input('> ')
-                    if user_answer == 'q':
-                        print(f'Thanks for playing. You earned {round_score} points')
-                        return
-
-                    # bank_first_for_two_rounds
-                    round_score = GameLogic.calculate_score(tuple(user_answer))
-                    shelved_amount.shelf(round_score)
-                    print(f'You have {round_score} unbanked points and '
-                          f'{len(new_roller) - len(tuple(user_answer))} dice remaining')
-                    dice_remaining = len(new_roller) - len(tuple(user_answer))
-                    print('(r)oll again, (b)ank your points or (q)uit:')
-                    user_answer = input('> ')
-                    if user_answer == 'q':
-                        print(f'Thanks for playing. You earned {round_score} points')
-
-                    if user_answer == 'b':
-                        shelved_amount.bank()
-                        print(f'You banked {round_score} points in round {round_counter}')
-                        round_counter += 1
-                        print(f'Total score is {shelved_amount.balance} points')
-                        Game.start_round_and_roll_dice(6, round_counter, roller)
-                        print('Enter dice to keep, or (q)uit:')
-                        user_answer = input('> ')
-                        if user_answer == 'q':
-                            print(f'Thanks for playing. You earned {shelved_amount.balance} points')
-                            return
-
-                # repeated_roller
-                if user_answer == 'r':
-                    new_roller2 = Game.repeat_roller(dice_remaining, roller)
-                    print('Enter dice to keep, or (q)uit:')
-                    user_answer = input('> ')
-                    if user_answer == 'q':
-                        print(f'Thanks for playing. You earned {round_score} points')
-                    else:
-                        shelved_amount = Banker()
-                        round_score += GameLogic.calculate_score(tuple(user_answer))
-                        shelved_amount.shelf(round_score)
-                        print(f'You have {round_score} unbanked points and '
-                              f'{len(new_roller2) - len(tuple(user_answer))} dice remaining')
-                        print('(r)oll again, (b)ank your points or (q)uit:')
-                        user_answer = input('> ')
-                        if user_answer == 'b':
-                            shelved_amount.bank()
-                            print(f'You banked {round_score} points in round {round_counter}')
-                            round_counter += 1
-                            print(f'Total score is {round_score} points')
-                            Game.start_round_and_roll_dice(6, round_counter, roller)
-                            print('Enter dice to keep, or (q)uit:')
-                            user_answer = input('> ')
-                            if user_answer == 'q':
-                                print(f'Thanks for playing. You earned {round_score} points')
-
-    @classmethod
-    def start_round_and_roll_dice(cls, dice_roll_num, round_number, roller):
-        print(f'Starting round {round_number}')
-        print('Rolling 6 dice...')
-        new_roller = roller(dice_roll_num)
-        formatted_roller = ' '.join([str(i) for i in new_roller])
-        print(f'*** {formatted_roller} ***')
-        cls.zilch = cls.game_logic.calculate_score(cls.new_roller)
-        if cls.zilch == 0:
-            Game.zilch()
-            cls.banker.clear_shelf()
-        if cls.zilch != 0:
-            print("Enter dice to keep, or (q)uit:")
+            self.user_input_dice(user_input_var)
+            self.user_input_handler(roller)
 
 
-        return new_roller
 
-    @classmethod
-    def repeat_roller(cls, dice_roll_num, roller):
-        print(f'Rolling {dice_roll_num} dice...')
-        new_roller2 = roller(dice_roll_num)
-        formatted_roller = ' '.join([str(i) for i in new_roller2])
-        print(f'*** {formatted_roller} ***')
+    def user_input_bank(self, roller):
+        print(f'''You banked {self.player_bank.shelved} points in round {self.round_counter}
+Total score is {self.player_bank.bank()} points''')
+        self.dice_number = 6
+        self.rolling_dice_text(self.dice_number, roller)
 
-        return new_roller2
+    def user_input_roll(self, roller):
+        self.rolling_dice_text(self.dice_number, roller, 0)
+
+    def user_input_dice(self, dice_picked):
+        user_input_var = tuple(map(int, dice_picked))
+        score_now = GameLogic.calculate_score(user_input_var)
+        self.player_bank.shelf(score_now)
+        self.dice_number -= len(user_input_var)
+        print(f'''You have {self.player_bank.shelved} unbanked points and {self.dice_number} dice remaining
+(r)oll again, (b)ank your points or (q)uit:''')
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.play()
+    one = Game()
+    one.play()
+    # rolling_dice_text(5)
