@@ -5,10 +5,11 @@ from ten_thousand.banker import Banker
 class Game:
 
     def __init__(self):
-
+        self.round_counter = 0
+        self.player_bank = Banker()
+        self.dice_number = 6
 
     def play(self, roller=GameLogic.roll_dice):
-
         print('''Welcome to Ten Thousand
 (y)es to play or (n)o to decline''')
         start_play = input('> ')
@@ -48,7 +49,10 @@ Enter dice to keep, or (q)uit:''')
             self.user_input_dice(user_input_var)
             self.user_input_handler(roller)
 
-
+    def user_choose_quit(self):
+        self.dice_number = 6
+        print(f"Thanks for playing. You earned {self.player_bank.bank()} points")
+        return
 
     def user_input_bank(self, roller):
         print(f'''You banked {self.player_bank.shelved} points in round {self.round_counter}
