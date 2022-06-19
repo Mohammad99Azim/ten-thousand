@@ -74,6 +74,5 @@ class GameLogic:
 
     @staticmethod
     def roll_dice(num):
-        rolling = []
         rolling = [random.randint(1, 6) for x in range(0, num)]
         return rolling
