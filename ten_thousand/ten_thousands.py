@@ -4,7 +4,13 @@ from ten_thousand.banker import Banker
 
 class Game:
     def __init__(self):
-        pass
+        self.zilch = None
+
+    @staticmethod
+    def zilch():
+        print("###########################################")
+        print("###        Zilch!! Round over :(        ###")
+        print("##########################################")
 
     def play(self, roller=GameLogic.roll_dice):
         round_counter = 1
@@ -98,6 +104,13 @@ class Game:
         new_roller = roller(dice_roll_num)
         formatted_roller = ' '.join([str(i) for i in new_roller])
         print(f'*** {formatted_roller} ***')
+        cls.zilch = cls.game_logic.calculate_score(cls.new_roller)
+        if cls.zilch == 0:
+            Game.zilch()
+            cls.banker.clear_shelf()
+        if cls.zilch != 0:
+            print("Enter dice to keep, or (q)uit:")
+
 
         return new_roller
 
