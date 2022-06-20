@@ -1,5 +1,7 @@
 from ten_thousand.game_logic import GameLogic
 from ten_thousand.banker import Banker
+# from game_logic import GameLogic
+# from banker import Banker
 
 
 class Game:
@@ -37,17 +39,23 @@ Enter dice to keep, or (q)uit:''')
 
     def check_hot_dice(self, roller):
         filter_roller = []
-        if sorted(roller) == [1, 2, 3, 4, 5, 6]:
-            self.dice_number = 6
-        if GameLogic.is_three_pairs(sorted(roller)):
-            self.dice_number = 6
-        for element in roller:
-            if element != 1 and element != 5:
-                filter_roller.append(element)
-        if len(filter_roller) == 0:
-            self.dice_number = 6
-        if GameLogic.count_of_sets(filter_roller) != 0:
-            self.dice_number = 6
+        if len(roller) > 2:
+            if sorted(roller) == [1, 2, 3, 4, 5, 6]:
+                self.dice_number = 6
+                return
+            if GameLogic.is_three_pairs(sorted(roller)):
+                self.dice_number = 6
+                return
+            for element in roller:
+                if element != 1 and element != 5:
+                    filter_roller.append(element)
+                    return
+            if len(filter_roller) == 0:
+                self.dice_number = 6
+                return
+            if GameLogic.count_of_sets(filter_roller) != 0:
+                self.dice_number = 6
+                return
 
     def user_input_handler(self, roller):
         user_input_var = input("> ")
