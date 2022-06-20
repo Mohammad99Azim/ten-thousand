@@ -39,8 +39,6 @@ class Game:
             self.round_counter += 1
             print(f'Starting round {self.round_counter}')
         self.random_dice = roller(dice_num)
-        ###$random_dices = roller(dice_num)
-
         text = "*** "
         for x in self.random_dice:
             text += str(x) + " "
@@ -56,7 +54,7 @@ class Game:
 
     def check_hot_dice(self, roller):
         filter_roller = []
-        if len(roller) > 2:
+        if len(roller) > 5:
             if sorted(roller) == [1, 2, 3, 4, 5, 6]:
                 self.dice_number = 6
                 return
@@ -92,7 +90,7 @@ class Game:
 
     def user_choose_quit(self):
         self.dice_number = 6
-        print(f"Thanks for playing. You earned {self.player_bank.bank()} points")
+        print(f"Thanks for playing. You earned {self.player_bank.balance} points")
         return
 
     def user_input_bank(self, roller):
