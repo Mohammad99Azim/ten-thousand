@@ -9,6 +9,16 @@ class Game:
         self.player_bank = Banker()
         self.dice_number = 6
 
+
+    def zilch(self,roller):
+        self.dice_number = 6
+        print("****************************************")
+        print("**        Zilch!!! Round over         **")
+        print("****************************************")
+        self.player_bank.clear_shelf()
+        self.user_input_bank(roller)
+
+
     def play(self, roller=GameLogic.roll_dice):
         print('''Welcome to Ten Thousand
 (y)es to play or (n)o to decline''')
@@ -27,13 +37,19 @@ class Game:
             self.round_counter += 1
             print(f'Starting round {self.round_counter}')
         random_dices = roller(dice_num)
+
         text = "*** "
         for x in random_dices:
             text += str(x) + " "
         text += "***"
         print(f'''Rolling {dice_num} dice...
-{text}
-Enter dice to keep, or (q)uit:''')
+{text}''')
+        if GameLogic.calculate_score(random_dices) == 0:
+            self.zilch(roller)
+        else:
+            print(f'''Enter dice to keep, or (q)uit:''')
+
+
 
     def user_input_handler(self, roller):
         user_input_var = input("> ")
