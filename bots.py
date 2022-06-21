@@ -5,7 +5,7 @@ at same level as pyproject.toml
 from abc import ABC, abstractmethod
 import builtins
 import re
-from ten_thousand.game import Game
+from ten_thousand.ten_thousands import Game
 from ten_thousand.game_logic import GameLogic
 
 
@@ -139,7 +139,27 @@ class NervousNellie(BaseBot):
 class YourBot(BaseBot):
     def _roll_bank_or_quit(self):
         """your logic here"""
-        return "b"
+
+        # handle base on the dice remaining
+        if self.dice_remaining <= 2:
+            return "b"
+        elif self.dice_remaining >= 5:
+            return "r"
+
+        # handle base on the Point you have
+        if self.unbanked_points == 1500:  # because here most of the  time he got a hot dice got a hot
+            return "r"
+        elif self.unbanked_points >= 1000:
+            return "b"
+        elif self.unbanked_points <= 400:
+            return "r"
+
+        ## here you can add  if the bot have 9000 point or more do the bank
+        ## like add some if statment hanlde the setuation with  the total score the bot have it now
+
+        # if the total score 9500   bank  if the point 500 or more like this
+
+        return 'b'
 
     def _enter_dice(self):
         """simulate user entering which dice to keep.
