@@ -20,36 +20,38 @@ class Game:
         self.player_bank.clear_shelf()
         self.user_input_bank(roller)
 
-
     def play(self, roller=GameLogic.roll_dice):
-        print('''Welcome to Ten Thousand
-(y)es to play or (n)o to decline''')
+        print("Welcome to Ten Thousand")
+        print("(y)es to play or (n)o to decline")
         start_play = input('> ')
         if start_play[0] == 'n':
             print('OK. Maybe another time')
             return
 
         ###
-
         self.rolling_dice_text(self.dice_number, roller)
         self.user_input_handler(roller)
 
     def rolling_dice_text(self, dice_num, roller, print_start_round=1):
-        if print_start_round == 1:
-            self.round_counter += 1
-            print(f'Starting round {self.round_counter}')
-        self.random_dice = roller(dice_num)
-        text = "*** "
-        for x in self.random_dice:
-            text += str(x) + " "
-        text += "***"
-        print(f'''Rolling {dice_num} dice...
-{text}''')
-        if GameLogic.calculate_score( self.random_dice) == 0:
-            self.zilch(roller)
+        if self.round_counter < 20:
+            if print_start_round == 1:
+                self.round_counter += 1
+                print(f'Starting round {self.round_counter}')
+            self.random_dice = roller(dice_num)
+            text = "*** "
+            for x in self.random_dice:
+                text += str(x) + " "
+            text += "***"
+            print(f'Rolling {dice_num} dice...')
+            print(f'{text}')
+            if GameLogic.calculate_score( self.random_dice) == 0:
+                self.zilch(roller)
+            else:
+                print(f'''Enter dice to keep, or (q)uit:''')
         else:
-            print(f'''Enter dice to keep, or (q)uit:''')
-
+            self.round_counter += 1
+            self.user_choose_quit()
+            return
 
 
     def check_hot_dice(self, roller):
@@ -73,20 +75,24 @@ class Game:
                 return
 
     def user_input_handler(self, roller):
-        user_input_var = input("> ")
-        user_input_var = user_input_var.replace(" ", "")
-        if user_input_var == 'q':
-            self.user_choose_quit()
-        elif user_input_var == 'b':
-            self.user_input_bank(roller)
-            self.user_input_handler(roller)
-        elif user_input_var == 'r':
-            self.user_input_roll(roller)
-            self.user_input_handler(roller)
+        if self.round_counter <= 20:
+            user_input_var = input("> ")
+            user_input_var = user_input_var.replace(" ", "")
+
+            if user_input_var == 'q':
+                self.user_choose_quit()
+            elif user_input_var == 'b':
+                self.user_input_bank(roller)
+                self.user_input_handler(roller)
+            elif user_input_var == 'r':
+                self.user_input_roll(roller)
+                self.user_input_handler(roller)
+            else:
+                self.user_input_dice(user_input_var, roller)
+                self.check_hot_dice([int(i) for i in list(user_input_var)])
+                self.user_input_handler(roller)
         else:
-            self.user_input_dice(user_input_var, roller)
-            self.check_hot_dice([int(i) for i in list(user_input_var)])
-            self.user_input_handler(roller)
+            return
 
     def user_choose_quit(self):
         self.dice_number = 6
@@ -94,8 +100,8 @@ class Game:
         return
 
     def user_input_bank(self, roller):
-        print(f'''You banked {self.player_bank.shelved} points in round {self.round_counter}
-Total score is {self.player_bank.bank()} points''')
+        print(f'You banked {self.player_bank.shelved} points in round {self.round_counter}')
+        print(f'Total score is {self.player_bank.bank()} points')
         self.dice_number = 6
         self.rolling_dice_text(self.dice_number, roller)
 
@@ -123,8 +129,8 @@ Total score is {self.player_bank.bank()} points''')
         score_now = GameLogic.calculate_score(user_input_var)
         self.player_bank.shelf(score_now)
         self.dice_number -= len(user_input_var)
-        print(f'''You have {self.player_bank.shelved} unbanked points and {self.dice_number} dice remaining
-(r)oll again, (b)ank your points or (q)uit:''')
+        print(f'You have {self.player_bank.shelved} unbanked points and {self.dice_number} dice remaining')
+        print('(r)oll again, (b)ank your points or (q)uit:')
 
 
     def intersect_with_dup(self, list1, list2):

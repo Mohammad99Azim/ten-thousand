@@ -5,7 +5,7 @@ at same level as pyproject.toml
 from abc import ABC, abstractmethod
 import builtins
 import re
-from ten_thousand.game import Game
+from ten_thousand.ten_thousands import Game
 from ten_thousand.game_logic import GameLogic
 
 
@@ -151,4 +151,4 @@ class YourBot(BaseBot):
 if __name__ == "__main__":
     num_games = 100
     NervousNellie.play(num_games)
-    YourBot.play(num_games)
+    # YourBot.play(num_games)
