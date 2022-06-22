@@ -136,9 +136,13 @@ class NervousNellie(BaseBot):
         return "b"
 
 
-class YourBot(BaseBot):
+class Reow(BaseBot):
     def _roll_bank_or_quit(self):
+
         """your logic here"""
+        #if Reow has 9000 points or more  and get 500 point do bank
+        if self.total_score >= 9000 and self.unbanked_points==500:
+            return "b"
 
         # handle base on the dice remaining
         if self.dice_remaining <= 2:
@@ -171,4 +175,4 @@ class YourBot(BaseBot):
 if __name__ == "__main__":
     num_games = 100
     NervousNellie.play(num_games)
-    YourBot.play(num_games)
+    Reow.play(num_games)
