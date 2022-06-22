@@ -36,7 +36,8 @@ class BaseBot(ABC):
 
         if self.print_all:
             self.real_print(text)
-        elif text.startswith("Thanks for playing."):
+
+        if text.startswith("Thanks for playing."):
             score = re.sub("\D", "", text)
             self.total_score += int(score)
 
@@ -116,17 +117,23 @@ class BaseBot(ABC):
             game = Game()
             try:
                 game.play()
+
             except SystemExit:
                 # in game system exit is fine
                 # because that's how they quit.
                 pass
 
             mega_total += player.total_score
+            # mega_total = player.total_score
             player.reset()
-
+            # print(mega_total)
+        print(player.total_score)
+        print(mega_total)
         print(
             f"{cls.__name__}: {num_games} games played with average score of {mega_total // num_games}"
         )
+        # print(player.total_score)
+            # player.reset()
 
 
 class NervousNellie(BaseBot):
@@ -155,7 +162,7 @@ class YourBot(BaseBot):
             return "r"
 
         ## here you can add  if the bot have 9000 point or more do the bank
-        ## like add some if statment hanlde the setuation with  the total score the bot have it now
+        ## like add some if statment hanlde the situation with  the total score the bot have it now
 
         # if the total score 9500   bank  if the point 500 or more like this
 
