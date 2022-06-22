@@ -36,7 +36,8 @@ class BaseBot(ABC):
 
         if self.print_all:
             self.real_print(text)
-        elif text.startswith("Thanks for playing."):
+
+        if text.startswith("Thanks for playing."):
             score = re.sub("\D", "", text)
             self.total_score += int(score)
 
@@ -138,7 +139,6 @@ class NervousNellie(BaseBot):
 
 class Reow(BaseBot):
     def _roll_bank_or_quit(self):
-
         """your logic here"""
         #if Reow has 9000 points or more  and get 500 point do bank
         if self.total_score >= 9000 and self.unbanked_points==500:
@@ -157,11 +157,6 @@ class Reow(BaseBot):
             return "b"
         elif self.unbanked_points <= 400:
             return "r"
-
-        ## here you can add  if the bot have 9000 point or more do the bank
-        ## like add some if statment hanlde the setuation with  the total score the bot have it now
-
-        # if the total score 9500   bank  if the point 500 or more like this
 
         return 'b'
 

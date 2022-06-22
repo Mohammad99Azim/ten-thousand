@@ -76,3 +76,23 @@ class GameLogic:
     def roll_dice(num):
         rolling = [random.randint(1, 6) for x in range(0, num)]
         return rolling
+
+    @staticmethod
+    def get_scorers(dice):
+
+        sum_of_all_score = GameLogic.calculate_score(dice)
+
+        if sum_of_all_score == 0:
+            return tuple()
+
+        scoring_items = []
+
+        for item, value in enumerate(dice):
+            new_roll = dice[:item] + dice[item + 1:]
+            roll_score = GameLogic.calculate_score(new_roll)
+
+            if roll_score != sum_of_all_score:
+                scoring_items.append(value)
+
+        return tuple(scoring_items)
+
